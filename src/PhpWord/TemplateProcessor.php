@@ -480,14 +480,6 @@ class TemplateProcessor
      */
     protected function setValueForPart($documentPartXML, $search, $replace, $limit)
     {
-        if (substr($search, 0, 2) !== '${' && substr($search, -1) !== '}') {
-            $search = '${' . $search . '}';
-        }
-
-        if (!String::isUTF8($replace)) {
-            $replace = utf8_encode($replace);
-        }
-
         return str_replace($search, $replace, $documentPartXML, $limit);
     }
 
