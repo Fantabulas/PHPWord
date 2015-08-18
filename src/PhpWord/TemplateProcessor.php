@@ -162,16 +162,20 @@ class TemplateProcessor
      * @param integer $limit
      * @return void
      */
-    public function setValue($search, $replace, $limit = -1)
+    public function setValue($search, $replace, $limit = -1, $allParts = true)
     {
-        foreach ($this->tempDocumentHeaders as $index => $headerXML) {
-            $this->tempDocumentHeaders[$index] = $this->setValueForPart($this->tempDocumentHeaders[$index], $search, $replace, $limit);
+        if ($allParts) {
+            foreach ($this->tempDocumentHeaders as $index => $headerXML) {
+                $this->tempDocumentHeaders[$index] = $this->setValueForPart($this->tempDocumentHeaders[$index], $search, $replace, $limit);
+            }
         }
 
         $this->tempDocumentMainPart = $this->setValueForPart($this->tempDocumentMainPart, $search, $replace, $limit);
 
-        foreach ($this->tempDocumentFooters as $index => $headerXML) {
-            $this->tempDocumentFooters[$index] = $this->setValueForPart($this->tempDocumentFooters[$index], $search, $replace, $limit);
+        if ($allParts) {
+            foreach ($this->tempDocumentFooters as $index => $headerXML) {
+                $this->tempDocumentFooters[$index] = $this->setValueForPart($this->tempDocumentFooters[$index], $search, $replace, $limit);
+            }
         }
     }
 
@@ -484,9 +488,7 @@ class TemplateProcessor
             $replace = utf8_encode($replace);
         }
 
-        $regExpDelim = '/';
-        $escapedSearch = preg_quote($search, $regExpDelim);
-        return preg_replace("{$regExpDelim}{$escapedSearch}{$regExpDelim}u", $replace, $documentPartXML, $limit);
+        return str_replace($search, $replace, $documentPartXML, $limit);
     }
 
     /**
